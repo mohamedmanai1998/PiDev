@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import trenna.common.RegexValidation;
+import trenna.entities.Administrateur;
 import trenna.entities.User;
 import trenna.exceptions.BadRequestException;
 import trenna.utils.DBConnexion;
@@ -46,12 +47,13 @@ public class UserService implements IService<User>{
 //            System.err.println("le compte email est incorrect !! ");
             throw new BadRequestException("le compte email est incorrect !! ");
         }
+        
         stm.executeUpdate(querry);
         
         } catch (SQLException ex) {
             System.out.println(ex.getMessage()); 
         } catch (BadRequestException ex) {
-            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage()); 
         }
     }
 
@@ -89,12 +91,36 @@ public class UserService implements IService<User>{
 
     @Override
     public Boolean update(User t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean update= true;
+        String query = "UPDATE `utilisateur` SET nom='"+t.getNom()+"', prenom='"+t.getPrenom()+"',"
+                + " age='"+t.getAge()+"', email='"+t.getEmail()+"', mdp='"+t.getMdp()+"' "
+                + "WHERE id ='"+t.getId()+"'"; 
+        try {
+            Statement stm = cnx.createStatement();
+            stm.executeUpdate(query);
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+            update = false;
+        }
+        return update;
     }
 
     @Override
     public Boolean supprimer(User t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean suppression = true;
+        try {
+            String query = "DELETE FROM `utilisateur` WHERE id ='"+t.getId()+"'";     
+            Statement stm = cnx.createStatement();
+            stm.executeUpdate(query);
+            System.out.println("l'utilisateur a été bien supprimer");
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage()); 
+            suppression = false;
+        }   
+        return suppression;
+       
     }
     
 

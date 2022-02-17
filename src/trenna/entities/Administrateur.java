@@ -19,7 +19,7 @@ public class Administrateur extends User{
     }
 
     public Administrateur(int id_Admin, Poste poste, Club id_Club, int id, String nom, String prenom, String email, int age, String mdp) {
-        super(nom, prenom, email, age, mdp);
+        super(id, nom, prenom, email, age, mdp);
         this.id_Admin = id_Admin;
         this.poste = poste;
         this.id_Club = id_Club;

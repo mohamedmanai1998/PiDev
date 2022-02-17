@@ -19,7 +19,7 @@ public class Client extends User {
     }
 
     public Client(int id_Client, Activite activite, Club id_Club, int id, String nom, String prenom, String email, int age, String mdp) {
-        super(nom, prenom, email, age, mdp);
+        super(id, nom, prenom, email, age, mdp);
         this.id_Client = id_Client;
         this.activite = activite;
         this.id_Club = id_Club;
