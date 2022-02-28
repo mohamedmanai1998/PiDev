@@ -5,6 +5,7 @@
 package trenna.services;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -12,11 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+
 import trenna.common.RegexValidation;
-import trenna.entities.Administrateur;
+
 import trenna.entities.User;
 import trenna.exceptions.BadRequestException;
 import trenna.utils.DBConnexion;
+import trenna.utils.PasswordUtils;
 
 /**
  *
@@ -24,16 +28,21 @@ import trenna.utils.DBConnexion;
  */
 public class UserService implements IService<User>{
 
-    private Connection cnx ;
+    private Connection cnx;
+    
     
     public UserService(){
         cnx =DBConnexion.getInstance().getCnx();
     }
     @Override
     public void ajouter(User u) {
+        String salt = PasswordUtils.getSalt(30);
+        String SecurePassword = PasswordUtils.generateSecurePassword(u.getMdp(), salt);
         try {
-            String querry="INSERT INTO `utilisateur`(`nom`, `prenom`,`email`,`age`,`mdp`) "
-                    + "VALUES ('"+u.getNom()+"','"+u.getPrenom()+"','"+u.getEmail()+"','"+u.getAge()+"','"+u.getMdp()+"')";
+            String querry="INSERT INTO `utilisateur`(`nom`, `prenom`,`email`,`age`,`mdp`,`role`,`active`) "
+                    + "VALUES ('"+u.getNom()+"','"+u.getPrenom()+"','"+u.getEmail()+"','"+u.getAge()+"','"+SecurePassword+"',"
+                    + "'"+u.getRole()+"','"+u.isActive()+"')";
+            String sql = "Select * From utilisateur where email='"+u.getEmail()+"' ";
             Statement stm =cnx.createStatement();
         if (null != u.getMdp() && (u.getMdp().length()) < 8
 	        || !RegexValidation.checkPasswordFormat(RegexValidation.CHAR_PATTERN, u.getMdp())
@@ -47,8 +56,18 @@ public class UserService implements IService<User>{
 //            System.err.println("le compte email est incorrect !! ");
             throw new BadRequestException("le compte email est incorrect !! ");
         }
+        String duplicate = null ;
+        ResultSet rs = stm.executeQuery(sql);
+        while(rs.next()){
+            duplicate = rs.getString(1);
+        }
+        if(duplicate == null){
+            
+            stm.executeUpdate(querry);
+            System.out.println("Ajout avec succes");
+        }else
+                System.err.println("le compte deja existe");
         
-        stm.executeUpdate(querry);
         
         } catch (SQLException ex) {
             System.out.println(ex.getMessage()); 
@@ -121,6 +140,78 @@ public class UserService implements IService<User>{
         }   
         return suppression;
        
+    }
+    
+    public void login(User u){
+
+        String sql = "SELECT * from `utilisateur`   WHERE email='" +u.getEmail()+ "' and mdp='" + u.getMdp() + "'";
+        try {
+            PreparedStatement ps = cnx.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();  
+            if(rs.next()){
+            System.out.println("Authentifiaction valide pour le client "+u.getEmail()); 
+            }else
+                System.err.println("le client "+u.getEmail()+" n'existe pas  "); 
+              
+            
+            
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        
+    }
+
+    public User rechercherParEmail(User t) {
+        
+        List<User> users = new ArrayList<>();
+        String sql ="SELECT * FROM utilisateur WHERE email=? ";
+        try {
+            PreparedStatement ps = cnx.prepareStatement(sql);
+            ps.setString(1, t.getEmail());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                t.setId(rs.getInt(1));
+                t.setNom(rs.getString(2));
+                t.setPrenom(rs.getString(3));
+                t.setAge(rs.getInt(4));
+                t.setEmail(rs.getString(5));
+                t.setMdp(rs.getString(6));
+                t.setRole(rs.getString(7));
+                users.add(t);
+                System.out.println(t.toString());
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return t;
+    }
+
+    public User rechercherParName(User t) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM utilisateur WHERE nom=? and prenom=? "; 
+        PreparedStatement ps;
+        try {
+            ps = cnx.prepareStatement(sql);
+            ps.setString(1, t.getNom());
+            ps.setString(2, t.getPrenom());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                t.setId(rs.getInt(1));
+                t.setNom(rs.getString(2));
+                t.setPrenom(rs.getString(3));
+                t.setAge(rs.getInt(4));
+                t.setEmail(rs.getString(5));
+                t.setMdp(rs.getString(6));
+                t.setRole(rs.getString(7));
+                users.add(t);
+                System.out.println(t.toString());
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+         
+        return t;
+        
     }
     
 

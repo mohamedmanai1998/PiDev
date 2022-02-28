@@ -19,5 +19,11 @@ public interface IService<T> {
      public Boolean update(T t);
 
      public Boolean supprimer(T t); 
+     
+     
+     
+    
+     
+      
 
 }

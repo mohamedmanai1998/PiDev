@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/services/IService.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/utils/DBConnexion.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/services/RoleService.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/entities/User.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/entities/UserRole.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/entities/Role.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/enumerations/Activite.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/Trenna.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/exceptions/BadRequestException.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/common/RegexValidation.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/services/UserService.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/enumerations/Poste.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/services/UserRoleService.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Trenna/src/trenna/utils/PasswordUtils.java</file>
+        </group>
+    </open-files>
+</project-private>

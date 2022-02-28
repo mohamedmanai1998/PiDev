@@ -15,18 +15,35 @@ public class User {
     private String email;
     private int age;
     private String mdp;
+    private String role;
+    private boolean active;
+    
 
     public User() {
     }
 
-    public User(int id, String nom, String prenom, String email,int age, String mdp) {
+    public User(String nom, String prenom, String email,int age, String mdp, String role, boolean active) {      
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.age = age;
+        this.mdp = mdp;
+        this.role = role;
+        this.active = active;
+        
+    }
+
+    public User(int id, String nom, String prenom, String email, int age, String mdp, String role, boolean active) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.age = age;
         this.mdp = mdp;
+        this.role = role;
+        this.active = active;
     }
+    
 
 
     /**
@@ -107,6 +124,26 @@ public class User {
         this.mdp = mdp;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+    
+    
+    
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", age=" + age + ", mdp=" + mdp + '}';
