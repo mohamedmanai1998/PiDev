@@ -15,25 +15,27 @@ public class User {
     private String email;
     private int age;
     private String mdp;
-    private String role;
-    private boolean active;
+    private Role role;
+    private String verificationCode;
+    
     
 
     public User() {
     }
 
-    public User(String nom, String prenom, String email,int age, String mdp, String role, boolean active) {      
+    public User(String nom, String prenom, String email,int age, String mdp, Role role, String verificationCode) {      
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.age = age;
         this.mdp = mdp;
         this.role = role;
-        this.active = active;
+        this.verificationCode = verificationCode;
+        
         
     }
 
-    public User(int id, String nom, String prenom, String email, int age, String mdp, String role, boolean active) {
+    public User(int id, String nom, String prenom, String email, int age, String mdp, Role role) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
@@ -41,7 +43,16 @@ public class User {
         this.age = age;
         this.mdp = mdp;
         this.role = role;
-        this.active = active;
+       
+    }
+
+    public User(String nom, String prenom, String email, int age, String mdp, String verificationCode) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.age = age;
+        this.mdp = mdp;
+        this.verificationCode = verificationCode;
     }
     
 
@@ -124,22 +135,24 @@ public class User {
         this.mdp = mdp;
     }
 
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    
 
     
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getVerificationCode() {
+        return verificationCode;        
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
     
     

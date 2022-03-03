@@ -11,13 +11,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.commons.lang3.RandomStringUtils;
+
+
+
 
 
 import trenna.common.RegexValidation;
+import trenna.entities.Role;
 
 import trenna.entities.User;
+import trenna.entities.UserRole;
 import trenna.exceptions.BadRequestException;
 import trenna.utils.DBConnexion;
 import trenna.utils.PasswordUtils;
@@ -38,10 +43,11 @@ public class UserService implements IService<User>{
     public void ajouter(User u) {
         String salt = PasswordUtils.getSalt(30);
         String SecurePassword = PasswordUtils.generateSecurePassword(u.getMdp(), salt);
+        String verificationCode = RandomStringUtils.randomNumeric(8);
         try {
-            String querry="INSERT INTO `utilisateur`(`nom`, `prenom`,`email`,`age`,`mdp`,`role`,`active`) "
-                    + "VALUES ('"+u.getNom()+"','"+u.getPrenom()+"','"+u.getEmail()+"','"+u.getAge()+"','"+SecurePassword+"',"
-                    + "'"+u.getRole()+"','"+u.isActive()+"')";
+            String querry="INSERT INTO `utilisateur`(`nom`, `prenom`,`email`,`age`,`mdp`,`role`, verification_code) "
+                    + "VALUES ('"+u.getNom()+"','"+u.getPrenom()+"','"+u.getEmail()+"','"+u.getAge()+"','"+u.getMdp()+"',"
+                    + "1,'"+verificationCode+"')";
             String sql = "Select * From utilisateur where email='"+u.getEmail()+"' ";
             Statement stm =cnx.createStatement();
         if (null != u.getMdp() && (u.getMdp().length()) < 8
@@ -51,6 +57,8 @@ public class UserService implements IService<User>{
             System.err.println("");
             throw new BadRequestException("Mot de passe incorrect, il faut saisir au minimum "
                     + "une chiffre, un caratere et une lettre avec un totale de 8 au minimum svp ");
+           
+                
 	}    
         if(!RegexValidation.isValidEmail(u.getEmail())){
 //            System.err.println("le compte email est incorrect !! ");
@@ -60,20 +68,28 @@ public class UserService implements IService<User>{
         ResultSet rs = stm.executeQuery(sql);
         while(rs.next()){
             duplicate = rs.getString(1);
+            
         }
         if(duplicate == null){
-            
             stm.executeUpdate(querry);
             System.out.println("Ajout avec succes");
-        }else
-                System.err.println("le compte deja existe");
-        
-        
+        }else{
+                System.err.println("le compte deja existe");  
+        }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage()); 
         } catch (BadRequestException ex) {
             System.out.println(ex.getMessage()); 
         }
+        UserRole userRole = new UserRole();
+        UserRoleService userRoleService = new UserRoleService();
+        Role role = new Role();
+        role.setIdRole(1);
+        
+        User user = rechercherParEmail(u);
+        userRole.setUser(u);
+        userRole.setRole(role);
+        userRoleService.ajouter(userRole);
     }
 
     @Override
@@ -149,7 +165,11 @@ public class UserService implements IService<User>{
             PreparedStatement ps = cnx.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();  
             if(rs.next()){
-            System.out.println("Authentifiaction valide pour le client "+u.getEmail()); 
+                
+            System.out.println("Authentifiaction valide pour le client"+u.getEmail()+", veuillez activer votre compte "); 
+//            if(u.getVerificationCode().equals(rs.getString("verification_code"))){
+//                    System.out.println("Le compte est activé");
+//                }
             }else
                 System.err.println("le client "+u.getEmail()+" n'existe pas  "); 
               
@@ -158,6 +178,25 @@ public class UserService implements IService<User>{
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
+        
+    }
+    public boolean activerAccountUser(User u){
+        
+         boolean active = true;
+         
+         String sql = "SELECT * from `utilisateur`   WHERE verification_code='" +u.getVerificationCode()+ "'";
+         try{
+              PreparedStatement ps = cnx.prepareStatement(sql);
+              ResultSet rs = ps.executeQuery();
+              while(rs.next()){
+                  u.setEmail(rs.getString("email"));
+                  u.setMdp(rs.getString("mdp"));
+              }
+              User user = rechercherParEmail(u);
+         }catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return false;
         
     }
 
@@ -176,7 +215,7 @@ public class UserService implements IService<User>{
                 t.setAge(rs.getInt(4));
                 t.setEmail(rs.getString(5));
                 t.setMdp(rs.getString(6));
-                t.setRole(rs.getString(7));
+//                t.setRole(t.getRole().setIdRole(rs.getInt(7)));
                 users.add(t);
                 System.out.println(t.toString());
             }
@@ -202,8 +241,35 @@ public class UserService implements IService<User>{
                 t.setAge(rs.getInt(4));
                 t.setEmail(rs.getString(5));
                 t.setMdp(rs.getString(6));
-                t.setRole(rs.getString(7));
+//                t.setRole(rs.getString(7));
                 users.add(t);
+                System.out.println(t.toString());
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+         
+        return t;
+        
+    }
+    
+    public User getUserById(int id){
+        String sql = "SELECT utilisateur FROM utilisateur WHERE id=? ";
+        PreparedStatement ps;
+        User t = new User();
+        try {
+            ps = cnx.prepareStatement(sql);
+            ps.setInt(1, id);        
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()){
+                t.setId(rs.getInt(1));
+                t.setNom(rs.getString(2));
+                t.setPrenom(rs.getString(3));
+                t.setAge(rs.getInt(4));
+                t.setEmail(rs.getString(5));
+                t.setMdp(rs.getString(6));
+//                t.setRole(rs.getString(7));
                 System.out.println(t.toString());
             }
         } catch (SQLException ex) {

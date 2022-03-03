@@ -32,7 +32,8 @@ public class UserRoleService {
         try {
             String querry="INSERT INTO `user_role`(`idUser`, `idRole`) "
                     + "VALUES ('"+ur.getUser().getId()+"','"+ur.getRole().getIdRole()+"')";
-            Statement stm =cnx.createStatement();                       
+            Statement stm =cnx.createStatement();  
+            stm.executeUpdate(querry);
         } catch (SQLException ex) {
             System.out.println(ex.getMessage()); 
         }

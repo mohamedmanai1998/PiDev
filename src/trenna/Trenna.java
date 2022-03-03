@@ -5,10 +5,9 @@
  */
 package trenna;
 
-import java.util.ArrayList;
-import java.util.List;
 import trenna.entities.User;
 import trenna.services.UserService;
+import trenna.utils.JavaMailUtils;
 
 /**
  *
@@ -19,11 +18,13 @@ public class Trenna {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        User user = new User("manai", "ahmed","manai@esprit.tn",24,"ahmeDA@1hmed","",false);
+    public static void main(String[] args) throws Exception {
+        User user = new User("manai", "ahmed","aaaaa@bb.cc",24,"q2uu6MNSuuxbJ+pQsknRoS38gdqtA9reY2J1zQ2UrkY=","65108837");
         UserService userservice = new UserService();
-        userservice.ajouter(user);
-       
+        
+        
+//        userservice.ajouter(user);
+        JavaMailUtils.sendMail("manai.mohamed@esprit.tn");
 //        userservice.afficher();
 //        userservice.supprimer(user);
 //        userservice.update(user);
