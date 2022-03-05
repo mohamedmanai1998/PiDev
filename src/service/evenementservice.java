@@ -122,19 +122,75 @@ public class evenementservice implements IService<evenement> {
     }
 
     @Override
-    public boolean supprimer(evenement t) {
-        boolean suppression = true;
+    public void supprimer(int idEven ) {
         try {
-            String query = "DELETE FROM evenement WHERE idEven ='"+t.getIdEven()+"'";     
-            Statement stm = conn.createStatement();
-            stm.executeUpdate(query);
-            System.out.println("l'evenement a été bien supprimer");
+            String sql = "DELETE FROM evenement WHERE idEven=?;";
             
+            pst=conn.prepareStatement(sql);
+			
+			pst.setInt(1,idEven);
+			
+			int executeUpdate = pst.executeUpdate();
+			
+			if(executeUpdate ==1){
+				System.out.println("evenement supprimé avec ID::"+idEven);
+			}
+		} catch (SQLException e) {
+		}
+	
+	}
+
+    
+    
+    
+    public List<evenement> trierpublication(){
+        List<evenement> evenements = new ArrayList<>();
+        String sql="select * from evenement ORDER BY dateeven DESC";
+        try {
+            ste = conn.createStatement();
+           rs= ste.executeQuery(sql);
+           while(rs.next()){
+               evenement e = new evenement();
+               e.setIdEven(rs.getInt("IdEven"));
+               e.setNom(rs.getString("Nom"));
+               e.setDateEven(rs.getDate("DateEven"));
+               e.setPrix(rs.getInt("Prix"));
+               e.setRecompense(rs.getInt("Recompense"));
+               evenements.add(e);
+               System.out.println(e.toString());
+            }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-            suppression = false;
-        }   
-        return suppression;
+        }
+        
+        return evenements;
+    }
+    
+   
+      public List<evenement> Rechercheevenement(String nom) {
+        List<evenement> myList = new ArrayList<evenement>();
+
+        try {
+            String requete3 = "SELECT * From evenement where nom like '%" + nom + "%'";
+            Statement st3 = DataSource.getInstance().getCnx().createStatement();
+            ResultSet rs = st3.executeQuery(requete3);
+            while (rs.next()) {
+                evenement p = new evenement();
+                p.setIdEven(rs.getInt("IdEven"));
+               p.setNom(rs.getString("Nom"));
+               p.setDateEven(rs.getDate("DateEven"));
+               p.setPrix(rs.getInt("Prix"));
+               p.setRecompense(rs.getInt("Recompense"));
+                
+                myList.add(p);
+
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+
+        }
+        return myList;
+
     }
 
     

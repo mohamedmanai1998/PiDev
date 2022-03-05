@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="513.0" prefWidth="671.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CommentaireController">
+    <stylesheets>
+        <URL value="@commentaire.css" />
+    </stylesheets>
+   <children>
+      <TextField fx:id="id" layoutX="138.0" layoutY="36.0" />
+      <TextField fx:id="nom" layoutX="122.0" layoutY="78.0" />
+      <TextField fx:id="date" layoutX="125.0" layoutY="125.0" />
+      <TextField fx:id="prix" layoutX="123.0" layoutY="169.0" />
+      <TextField fx:id="recompense" layoutX="124.0" layoutY="212.0" />
+      <Label layoutX="36.0" layoutY="38.0" text="ID evenement" />
+      <Label layoutX="55.0" layoutY="82.0" text="Nom" />
+      <Label layoutX="13.0" layoutY="128.0" text="Date d'evenement" />
+      <Label layoutX="41.0" layoutY="170.0" text="Prix" />
+      <Label layoutX="33.0" layoutY="214.0" text="Recompense" />
+      <Label layoutX="18.0" layoutY="270.0" prefHeight="18.0" prefWidth="170.0" text="Ajouter Votre Commentaire:" />
+      <TextField fx:id="nomc" layoutX="155.0" layoutY="372.0" />
+      <TextField fx:id="comment" layoutX="165.0" layoutY="425.0" />
+      <Label layoutX="53.0" layoutY="323.0" text="idguest" />
+      <Label layoutX="61.0" layoutY="376.0" text="nom" />
+      <Label layoutX="33.0" layoutY="429.0" text="commentaire" />
+      <Button fx:id="AjouterCommentbtn" layoutX="499.0" layoutY="464.0" mnemonicParsing="false" onAction="#AjouterCommentaire" text="Ajouter commentaire" />
+      <TextField fx:id="id_guest" layoutX="165.0" layoutY="319.0" />
+   </children>
+</AnchorPane>
