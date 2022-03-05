@@ -131,7 +131,62 @@ public class CommentaireService implements IService<Commentaire> {
 		}
 	
 	}
+    
+    
+    public List<Commentaire> afficherCommentairee(int id){
+        List<Commentaire> commentaires = new ArrayList<>();
+        String sql="select * from commentaire where id_even='" + id + "'";
+        try {
+            pst=conn.prepareStatement(sql);
+            ResultSet rs=pst.executeQuery();
+            while(rs.next()){
+                Commentaire e = new Commentaire();
+               e.setId(rs.getInt("id"));
+               e.setId_guest(rs.getInt("id_guest"));
+               e.setId_even(rs.getInt("id_even"));
+               e.setNom(rs.getString("nom"));
+               e.setComment(rs.getString("comment"));
+               e.setDate_com(rs.getDate("date_com"));
+               commentaires.add(e);
+                
+                
+                
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        return commentaires;
     }
+    
+    public int GEtMoyRating(int id) {  
+
+        int i = 0;
+        try {
+            String sqlStationName = " select AVG(note) as moyenne from commentaire where id_even="+id;
+            Statement st3 = DataSource.getInstance().getCnx().createStatement();
+            ResultSet rs = st3.executeQuery(sqlStationName);
+            while (rs.next()) {
+
+                i = (int)rs.getDouble("moyenne");
+              //  System.out.println("i= "+i);
+
+            }
+
+            rs.close();
+            st3.close();
+
+        } catch (SQLException ex) {
+            System.err.println("ERR" + ex);
+        }
+        return i;
+    }
+}
+    
+    
+    
+    
+    
    
 
 

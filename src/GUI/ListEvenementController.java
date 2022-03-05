@@ -20,6 +20,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -60,16 +61,23 @@ public class ListEvenementController implements Initializable {
     private Button Ajouterbtncomment;
     @FXML
     private TextField id_guest;
+    @FXML
+    private ListView<Commentaire> L_afficher;
+    @FXML
+    private TextField Moynote;
        
        
           
        public  void setChosenEvent(evenement e) {
+           CommentaireService cs= new CommentaireService();
            
          nom.setText(e.getNom());
          date.setText(String.valueOf(e.getDateEven()));
          prix.setText(String.valueOf( e.getPrix()));
          //recompense.setText(String.valueOf( e.getRecompense()));
          id_even.setText(String.valueOf( e.getIdEven()));
+         Moynote.setText(String.valueOf(cs.GEtMoyRating(e.getIdEven())));
+         L_afficher.getItems().addAll(cs.afficherCommentairee(e.getIdEven()));
      
      }
     @FXML
@@ -85,6 +93,7 @@ public class ListEvenementController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        
          grid.getChildren().clear();
          
              if (evenements.size() > 0) {
@@ -93,6 +102,7 @@ public class ListEvenementController implements Initializable {
                 @Override
                 public void onClickListener(evenement e) {
                     setChosenEvent(e);
+                    
                 }
             };
         }
