@@ -58,7 +58,7 @@ public class UserFXMLController implements Initializable {
         User user = new User();
         Role role = new Role();
         role.setIdRole(1);
-        UserService userService = new UserService();
+        UserService userService = UserService.getInstance();
         user.setNom(nom.getText());
         user.setPrenom(prenom.getText());
         
@@ -66,8 +66,8 @@ public class UserFXMLController implements Initializable {
         
         user.setMdp(mdp.getText());
         user.setRole(role);
+//        User u = userService.rechercherParEmail(user);
         
-//        JavaMailUtils.sendMail(user.getEmail());
         
         Alert alert = new Alert(Alert.AlertType.ERROR);
         if (null != mdp.getText() && (mdp.getText().length()) < 8
@@ -98,6 +98,7 @@ public class UserFXMLController implements Initializable {
         }else {
             user.setAge(Integer.parseInt(age.getText()));
             userService.ajouter(user);
+            JavaMailUtils.sendMail(user.getEmail());
             
 //            userService.rechercherParEmail(user);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/trenna/fxml/ActiveAccountUserFXML.fxml"));

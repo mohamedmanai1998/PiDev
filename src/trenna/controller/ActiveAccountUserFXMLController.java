@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import trenna.entities.User;
@@ -25,6 +26,7 @@ import trenna.services.UserService;
  */
 public class ActiveAccountUserFXMLController implements Initializable {
 
+    @FXML
     private TextField code;
     @FXML
     private TextField email;
@@ -40,12 +42,23 @@ public class ActiveAccountUserFXMLController implements Initializable {
     }    
 
     @FXML
-    private void login(ActionEvent event) {
+    private void login(ActionEvent event) throws IOException {
         User u = new User();
         UserService userService = new UserService();
-        
+         Alert alert = new Alert(Alert.AlertType.ERROR);
         u.setVerificationCode(code.getText());
         userService.activerAccountUser(u);
+        if(userService.activerAccountUser(u)==true){
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/trenna/fxml/LoginFXML.fxml"));
+           Parent root = loader.load();
+           LoginFXMLController ac =loader.getController();
+           aa.getScene().setRoot(root);
+        }else{
+            alert.setTitle("le code est invalide !!");
+            alert.setHeaderText("Veuillez saisir le code correctement");
+            alert.setContentText("Il faut consulter votre boite email pour recuperer le code de validation");
+            alert.showAndWait();
+        }
     }
 
     @FXML

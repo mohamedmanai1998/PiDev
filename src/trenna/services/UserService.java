@@ -34,11 +34,21 @@ import trenna.utils.PasswordUtils;
 public class UserService implements IService<User>{
 
     private Connection cnx;
-    
+    private static UserService instance;
     
     public UserService(){
         cnx =DBConnexion.getInstance().getCnx();
     }
+    
+    
+    public static UserService getInstance(){
+        	if(instance == null) {
+			instance = new UserService();
+		}
+			
+		return instance;	
+    }
+    
     @Override
     public void ajouter(User u) {
         String salt = PasswordUtils.getSalt(30);
@@ -101,16 +111,18 @@ public class UserService implements IService<User>{
         String querry ="SELECT * FROM `utilisateur`";
      
             ResultSet rs= stm.executeQuery(querry);
-        
+        RoleService roleService = new RoleService();
         while(rs.next()){
             User u = new User();
             u.setId(rs.getInt("id"));
             u.setNom(rs.getString("nom"));
             u.setPrenom(rs.getString("prenom"));
             u.setEmail(rs.getString("email"));
-            u.setAge(rs.getInt("age"));
-            u.setMdp(rs.getString("mdp"));
-            
+            u.setAge(rs.getInt("age"));            
+//            u.setMdp(rs.getString("mdp"));
+            int idRole = rs.getInt(7);
+            Role role = roleService.getById(idRole);
+            u.setRole(role);
             
             users.add(u);
             System.out.println(u.toString()); 
@@ -128,7 +140,7 @@ public class UserService implements IService<User>{
     public Boolean update(User t) {
         boolean update= true;
         String query = "UPDATE `utilisateur` SET nom='"+t.getNom()+"', prenom='"+t.getPrenom()+"',"
-                + " age='"+t.getAge()+"', email='"+t.getEmail()+"', mdp='"+t.getMdp()+"' "
+                + " age='"+t.getAge()+"', email='"+t.getEmail()+"', mdp='"+t.getMdp()+"', role='"+t.getRole().getIdRole()+"' "
                 + "WHERE id ='"+t.getId()+"'"; 
         try {
             Statement stm = cnx.createStatement();
@@ -158,51 +170,60 @@ public class UserService implements IService<User>{
        
     }
     
-    public void login(User u){
-
-        String sql = "SELECT * from `utilisateur`   WHERE email='" +u.getEmail()+ "' and mdp='" + u.getMdp() + "'";
+    public boolean login(User u){
+        boolean login = false ;
+        String sql = "SELECT email, mdp from `utilisateur`   WHERE email='" +u.getEmail()+ "' and mdp='" + u.getMdp() + "'";
         try {
             PreparedStatement ps = cnx.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();  
             if(rs.next()){
-                
-            System.out.println("Authentifiaction valide pour le client"+u.getEmail()+", veuillez activer votre compte "); 
+                if((rs.getString("email").equals(u.getEmail()))
+                        ||(rs.getString("mdp").equals(u.getMdp()))){
+                    System.out.println("Vous etes connecté(e)" );
+                    login = true ;
+                }else
+                    System.err.println("Veuillez saisir correctement l'adresse ou le mot de passe" );
+//             System.out.println("Authentifiaction valide pour le client "+u.getEmail()+"");
 //            if(u.getVerificationCode().equals(rs.getString("verification_code"))){
 //                    System.out.println("Le compte est activé");
 //                }
             }else
                 System.err.println("le client "+u.getEmail()+" n'existe pas  "); 
-              
+                return login;
             
             
         } catch (SQLException ex) {
             System.err.println(ex.getMessage());
         }
-        
+        return login;
     }
     public boolean activerAccountUser(User u){
         
          boolean active = true;
          
-         String sql = "SELECT * from `utilisateur`   WHERE verification_code='" +u.getVerificationCode()+ "'";
+         String sql = "SELECT * from `utilisateur` WHERE verification_code='" +u.getVerificationCode()+ "'";
          try{
               PreparedStatement ps = cnx.prepareStatement(sql);
               ResultSet rs = ps.executeQuery();
               while(rs.next()){
                   u.setEmail(rs.getString("email"));
                   u.setMdp(rs.getString("mdp"));
+                  rechercherParEmail(u);
               }
-              User user = rechercherParEmail(u);
+              
+              
          }catch (SQLException ex) {
             System.err.println(ex.getMessage());
+            active = false ;
         }
-        return false;
+        return active;
         
     }
 
     public User rechercherParEmail(User t) {
         
         List<User> users = new ArrayList<>();
+        RoleService roleService = new RoleService();
         String sql ="SELECT * FROM utilisateur WHERE email=? ";
         try {
             PreparedStatement ps = cnx.prepareStatement(sql);
@@ -215,7 +236,10 @@ public class UserService implements IService<User>{
                 t.setAge(rs.getInt(4));
                 t.setEmail(rs.getString(5));
                 t.setMdp(rs.getString(6));
-//                t.setRole(t.getRole().setIdRole(rs.getInt(7)));
+                int idRole = rs.getInt(7);
+                Role role = roleService.getById(idRole);
+                t.setRole(role);
+                t.setVerificationCode(rs.getString(8));
                 users.add(t);
                 System.out.println(t.toString());
             }

@@ -7,12 +7,15 @@ package trenna.services;
 
  
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import trenna.entities.Role;
+import trenna.entities.User;
+
 import trenna.entities.UserRole;
 import trenna.utils.DBConnexion;
 
@@ -80,6 +83,43 @@ public class UserRoleService {
             update = false;
         }
         return update;
+    }
+    public Boolean supprimer(UserRole r) {
+        boolean suppression = true;
+        try {
+            String query = "DELETE FROM `user_role` WHERE idUser ='"+r.getUser().getId()+"'";     
+            Statement stm = cnx.createStatement();
+            stm.executeUpdate(query);
+            System.out.println("le role d'utilisateur a été bien supprimer");            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage()); 
+            suppression = false;
+        }   
+        return suppression;
+    }
+    public UserRole getById(int id) {
+        List<UserRole> roles = new ArrayList<>();
+        UserRole r = new UserRole();
+        RoleService roleService = new RoleService();
+        UserService userService = new UserService();
+        String sql ="SELECT * FROM user_role WHERE idUser="+id;
+        try {
+            PreparedStatement ps = cnx.prepareStatement(sql);        
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                int idUser = rs.getInt(1);
+                int idRole = rs.getInt(2);
+                Role role = roleService.getById(idRole);
+                User user = userService.getUserById(idUser);
+                r.setUser(user);
+                r.setRole(role);
+                roles.add(r);
+                System.out.println(r.toString());
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return r;
     }
 
     

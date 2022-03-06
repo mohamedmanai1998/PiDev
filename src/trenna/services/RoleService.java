@@ -97,12 +97,12 @@ public class RoleService implements IService<Role>{
         return suppression;
     }
     
-    public Role rechercherParName(Role r) {
+    public Role getById(int id) {
         List<Role> roles = new ArrayList<>();
-        String sql ="SELECT * FROM role WHERE name=? ";
+        Role r = new Role();
+        String sql ="SELECT * FROM role WHERE idRole="+id;
         try {
-            PreparedStatement ps = cnx.prepareStatement(sql);
-            ps.setString(1, r.getName());
+            PreparedStatement ps = cnx.prepareStatement(sql);        
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 r.setIdRole(rs.getInt(1));

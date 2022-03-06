@@ -55,7 +55,14 @@ public class User {
         this.verificationCode = verificationCode;
     }
     
-
+public User(String nom, String prenom, String email, int age, String mdp) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.age = age;
+        this.mdp = mdp;
+        
+    }
 
     /**
      * @return the id
@@ -159,7 +166,7 @@ public class User {
     
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", age=" + age + ", mdp=" + mdp + '}';
+        return " nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", age=" + age + ", role=" + role.getName() + "";
     }
 
 

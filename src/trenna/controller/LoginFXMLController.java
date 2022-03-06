@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -40,12 +41,22 @@ public class LoginFXMLController implements Initializable {
     }    
 
     @FXML
-    private void login(ActionEvent event) {
+    private void login(ActionEvent event) throws IOException {
         User user = new User();
         UserService userService = new UserService();
         user.setEmail(email.getText());
         user.setMdp(mdp.getText());
-        userService.login(user);
+        
+        User u = userService.rechercherParEmail(user);
+        if(userService.login(user)==true){
+            if(u.getRole().getName().equals("ADMINISTRATOR")){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/trenna/fxml/GestionUserFXML.fxml"));
+                Parent root = loader.load();            
+                GestionUserFXMLController ac =loader.getController();
+               
+                email.getScene().setRoot(root);
+            }
+        }
     }
 
     @FXML

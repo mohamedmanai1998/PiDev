@@ -19,10 +19,10 @@ public class Trenna {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        User user = new User("manai", "ahmed","aaaaa@bb.cc",24,"q2uu6MNSuuxbJ+pQsknRoS38gdqtA9reY2J1zQ2UrkY=","65108837");
-        UserService userservice = new UserService();
+        User user = new User("manai", "ahmed","manai.mohamed@esprit.tn",24,"q2uu6MNSuuxbJ+pQsknRoS38gdqtA9reY2J1zQ2UrkY=");
+        UserService userservice = UserService.getInstance();
         
-        
+        userservice.ajouter(user);
 //        userservice.ajouter(user);
         JavaMailUtils.sendMail("manai.mohamed@esprit.tn");
 //        userservice.afficher();

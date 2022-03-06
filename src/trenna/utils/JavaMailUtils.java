@@ -55,12 +55,15 @@ public class JavaMailUtils {
 
     private static Message prepareMessage(Session session, String myAccountEmail, String recepient) {
         try {
-            
+            User user1 = new User();
+            user1.setEmail(recepient);
+            UserService userService = new UserService();
+//            User user = userService.rechercherParEmail(user1);
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(myAccountEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recepient));
             message.setSubject("Code de verification");
-            String htmlCode = "<h1> </h1> <br/> <h2><b>Next Line </b></h2>";
+            String htmlCode = "<h1> Le Code de validation est : </h1> <br/> <h2><b>"+userService.rechercherParEmail(user1).getVerificationCode()+" </b></h2>";
             message.setContent(htmlCode, "text/html");
             return message;
         } catch (Exception ex) {
