@@ -192,6 +192,45 @@ public class evenementservice implements IService<evenement> {
         return myList;
 
     }
+      public List<evenement> rechercheevenement(String type, String valeur) {
+        List<evenement> myList = new ArrayList();
+        String requete = null;
+
+        try {
+            if (type.equals("Nom")) {
+                requete = "SELECT * from evenement where nom like '%" + valeur + "%'";
+            } else if (type.equals("IdEven")) {
+                requete = "SELECT * from evenement where IdEven like '%" + valeur + "%'";
+            } else if (type.equals("Prix")) {
+                requete = "SELECT * from evenement where Prix like '%" + valeur + "%'";
+            } else if (type.equals("Recompense")) {
+                requete = "SELECT * from evenement where Recompense like '%" + valeur + "%'";
+            } 
+             else if (type.equals("Tout")) {
+                requete = "SELECT * from evenement where  nom like '%" + valeur + "%' or IdEven like '%" + valeur + "%' or Prix like '%" + valeur + "%' or Recompense like '%" + valeur + "%' ";
+            }
+
+            pst = conn.prepareStatement(requete);
+
+            evenement p;
+            for(ResultSet rs = pst.executeQuery(requete); rs.next(); myList.add(p)) {
+                p = new evenement();
+                 p.setIdEven(rs.getInt("id_even"));
+                p.setDateEven(rs.getDate("dateEven"));
+                p.setNom(rs.getString("prix"));
+                p.setPrix(rs.getInt("recompense"));
+               
+                p.setRecompense(rs.getInt("recompense"));
+               
+            }
+        } catch (SQLException ex) {
+            System.err.println(ex.getMessage());
+        }
+
+        return myList;
+    }
+      
+    
 
     
     
