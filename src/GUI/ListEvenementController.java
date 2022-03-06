@@ -77,7 +77,7 @@ public class ListEvenementController implements Initializable {
          //recompense.setText(String.valueOf( e.getRecompense()));
          id_even.setText(String.valueOf( e.getIdEven()));
          Moynote.setText(String.valueOf(cs.GEtMoyRating(e.getIdEven())));
-         L_afficher.getItems().addAll(cs.afficherCommentairee(e.getIdEven()));
+         
      
      }
     @FXML
@@ -101,8 +101,9 @@ public class ListEvenementController implements Initializable {
             myListener = new MyListener() {
                 @Override
                 public void onClickListener(evenement e) {
+                    CommentaireService cs= new CommentaireService();
                     setChosenEvent(e);
-                    
+                    L_afficher.getItems().addAll(cs.afficherCommentairee(e.getIdEven()));
                 }
             };
         }
