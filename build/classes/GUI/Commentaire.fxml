@@ -4,30 +4,86 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="513.0" prefWidth="671.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CommentaireController">
     <stylesheets>
         <URL value="@commentaire.css" />
     </stylesheets>
    <children>
-      <TextField fx:id="id" layoutX="138.0" layoutY="36.0" />
-      <TextField fx:id="nom" layoutX="122.0" layoutY="78.0" />
-      <TextField fx:id="date" layoutX="125.0" layoutY="125.0" />
-      <TextField fx:id="prix" layoutX="123.0" layoutY="169.0" />
-      <TextField fx:id="recompense" layoutX="124.0" layoutY="212.0" />
-      <Label layoutX="36.0" layoutY="38.0" text="ID evenement" />
-      <Label layoutX="55.0" layoutY="82.0" text="Nom" />
-      <Label layoutX="13.0" layoutY="128.0" text="Date d'evenement" />
-      <Label layoutX="41.0" layoutY="170.0" text="Prix" />
-      <Label layoutX="33.0" layoutY="214.0" text="Recompense" />
-      <Label layoutX="18.0" layoutY="270.0" prefHeight="18.0" prefWidth="170.0" text="Ajouter Votre Commentaire:" />
-      <TextField fx:id="nomc" layoutX="155.0" layoutY="372.0" />
-      <TextField fx:id="comment" layoutX="165.0" layoutY="425.0" />
-      <Label layoutX="53.0" layoutY="323.0" text="idguest" />
-      <Label layoutX="61.0" layoutY="376.0" text="nom" />
-      <Label layoutX="33.0" layoutY="429.0" text="commentaire" />
-      <Button fx:id="AjouterCommentbtn" layoutX="499.0" layoutY="464.0" mnemonicParsing="false" onAction="#AjouterCommentaire" text="Ajouter commentaire" />
-      <TextField fx:id="id_guest" layoutX="165.0" layoutY="319.0" />
+      <HBox alignment="CENTER" layoutX="62.0" layoutY="8.0" prefHeight="33.0" prefWidth="51.0" style="-fx-background-color: F3F0EF;" styleClass="free-delivery-card" stylesheets="@../../../../pi/projet/wetransfer_just-another-pi-dev_2022-03-02_1656%20(2)/Just-Another-Pi-Dev/src/css/style.css" />
+      <HBox alignment="CENTER" layoutX="43.0" layoutY="178.0" prefHeight="177.0" prefWidth="273.0" style="-fx-background-color: F3F0EF;" styleClass="free-delivery-card" stylesheets="@../../../../pi/projet/wetransfer_just-another-pi-dev_2022-03-02_1656%20(2)/Just-Another-Pi-Dev/src/css/style.css" />
+      <VBox fx:id="Pubdetail" alignment="CENTER" layoutX="145.0" layoutY="1.0" prefHeight="532.0" prefWidth="343.0" style="-fx-background-color: FFD6C0;" styleClass="add-btn" stylesheets="@../../../../pi/projet/wetransfer_just-another-pi-dev_2022-03-02_1656%20(2)/Just-Another-Pi-Dev/src/css/style.css">
+         <children>
+            <Pane prefHeight="509.0" prefWidth="343.0">
+               <children>
+                  <HBox alignment="CENTER" layoutX="52.0" layoutY="-2.0" prefHeight="33.0" prefWidth="51.0" style="-fx-background-color: F3F0EF;" styleClass="free-delivery-card" stylesheets="@../../../../pi/projet/wetransfer_just-another-pi-dev_2022-03-02_1656%20(2)/Just-Another-Pi-Dev/src/css/style.css">
+                     <children>
+                        <TextField fx:id="idEven" alignment="CENTER" prefHeight="33.0" prefWidth="139.0" promptText="Identifiant" styleClass="transparent">
+                           <font>
+                              <Font name="Bodoni MT" size="19.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="108.0" layoutY="54.0" prefHeight="25.0" prefWidth="177.0" style="-fx-background-color: F3F0EF;" styleClass="transparent" stylesheets="@../../../../pi/projet/wetransfer_just-another-pi-dev_2022-03-02_1656%20(2)/Just-Another-Pi-Dev/src/css/style.css">
+                     <children>
+                        <TextField fx:id="nomc" alignment="CENTER" prefHeight="33.0" prefWidth="190.0" promptText="id_guest" styleClass="transparent">
+                           <font>
+                              <Font name="Bodoni MT" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER" layoutX="33.0" layoutY="168.0" prefHeight="177.0" prefWidth="273.0" style="-fx-background-color: F3F0EF;" styleClass="free-delivery-card" stylesheets="@../../../../pi/projet/wetransfer_just-another-pi-dev_2022-03-02_1656%20(2)/Just-Another-Pi-Dev/src/css/style.css">
+                     <children>
+                        <TextField fx:id="comment" alignment="CENTER" prefHeight="120.0" prefWidth="263.0" promptText="Veuillez saisir votre commentaire" styleClass="transparent">
+                           <font>
+                              <Font name="Bodoni MT" size="16.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <Label layoutX="112.0" layoutY="-2.0" prefHeight="48.0" prefWidth="167.0" text="'éme Evenement">
+                     <font>
+                        <Font name="Script MT Bold" size="19.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="46.0" prefHeight="48.0" prefWidth="136.0" text="NOM" textFill="#86307b" textOverrun="CENTER_WORD_ELLIPSIS">
+                     <font>
+                        <Font name="Script MT Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="10.0" layoutY="117.0" prefHeight="25.0" prefWidth="136.0" text="Date" textFill="#86307b" textOverrun="CENTER_WORD_ELLIPSIS">
+                     <font>
+                        <Font name="Script MT Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="24.0" layoutY="364.0" prefHeight="17.0" prefWidth="136.0" text="Note" textFill="#86307b" textOverrun="CENTER_WORD_ELLIPSIS">
+                     <font>
+                        <Font name="Script MT Bold" size="25.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="date" layoutX="112.0" layoutY="120.0" />
+                  <TextField fx:id="note" layoutX="92.0" layoutY="368.0" prefHeight="25.0" prefWidth="64.0" />
+                  <Button fx:id="Ajouterbtncomment" layoutX="73.0" layoutY="430.0" mnemonicParsing="false" onAction="#AjouterCommentaire" prefHeight="41.0" prefWidth="197.0" style="-fx-background-color: #811453;" styleClass="add-btn" stylesheets="@../../../../pi/projet/wetransfer_just-another-pi-dev_2022-03-02_1656%20(2)/Just-Another-Pi-Dev/src/css/style.css" text="Ajouter votre commentaire" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../pi/projet/wetransfer_just-another-pi-dev_2022-03-02_1656%20(2)/Just-Another-Pi-Dev/src/images/icons8-ajouter-au-chat-48.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </Pane>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

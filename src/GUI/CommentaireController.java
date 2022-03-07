@@ -18,6 +18,8 @@ import javafx.scene.control.TextField;
 import service.CommentaireService;
 import service.evenementservice;
 import static GUI.AfficherEvenementController.selectedItem;
+import static GUI.ListEvenementController.selectedItem5;
+import javafx.scene.layout.VBox;
 
 /**
  * FXML Controller class
@@ -26,24 +28,26 @@ import static GUI.AfficherEvenementController.selectedItem;
  */
 public class CommentaireController implements Initializable {
 
-    @FXML
     private TextField id_guest;
     @FXML
     private TextField nomc;
     @FXML
     private TextField comment;
-    @FXML
-    private Button AjouterCommentbtn;
-    @FXML
     private TextField id;
-    @FXML
     private TextField nom;
     @FXML
     private TextField date;
-    @FXML
     private TextField prix;
-    @FXML
     private TextField recompense;
+    //static Commentaire selectedItem5;
+    @FXML
+    private VBox Pubdetail;
+    @FXML
+    private TextField idEven;
+    @FXML
+    private TextField note;
+    @FXML
+    private Button Ajouterbtncomment;
 
  
     /**
@@ -51,14 +55,14 @@ public class CommentaireController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-      /* evenement pub = new evenement();
-        evenementservice pubService = new evenementservice();
-        id.setText(String.valueOf(selectedItem.getIdEven()));
-        nom.setText(selectedItem.getNom());
-        date.setText(String.valueOf(selectedItem.getDateEven()));
-        prix.setText(String.valueOf(selectedItem.getPrix()));
-        recompense.setText(String.valueOf(selectedItem.getRecompense()));
-        */
+      
+       
+        idEven.setText(String.valueOf(selectedItem5.getId_even()));
+        nomc.setText(selectedItem5.getNom());
+        date.setText(String.valueOf(selectedItem5.getDate_com()));
+        comment.setText(String.valueOf(selectedItem5.getComment()));
+        note.setText(String.valueOf(selectedItem5.getNote()));
+        
 // TODO
     }    
 

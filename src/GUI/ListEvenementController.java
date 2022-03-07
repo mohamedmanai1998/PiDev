@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import service.CommentaireService;
 import service.evenementservice;
+import entite.EnvoyerEmail;
 
 /**
  * FXML Controller class
@@ -65,7 +66,11 @@ public class ListEvenementController implements Initializable {
     private ListView<Commentaire> L_afficher;
     @FXML
     private TextField Moynote;
-       
+    @FXML
+    private TextField mail;
+    @FXML
+    private Button buttonmail;
+       static Commentaire selectedItem5;
        
           
        public  void setChosenEvent(evenement e) {
@@ -213,6 +218,33 @@ public class ListEvenementController implements Initializable {
         
  
         cs.ajouterCommentaire(c);
+    }
+
+    @FXML
+    private void sendmail(ActionEvent event) throws Exception {
+        EnvoyerEmail em= new EnvoyerEmail();
+       em.sendMail(mail.getText(),"aziz");
+           
+
+        
+    }
+
+    @FXML
+    private void index(MouseEvent event) {
+        selectedItem5 = L_afficher.getSelectionModel().getSelectedItem();
+        
+        try {
+            
+             FXMLLoader loader = new FXMLLoader(getClass().getResource("Commentaire.fxml"));
+            Parent root = loader.load();
+            CommentaireController ac =loader.getController();
+            
+            
+            id_even.getScene().setRoot(root);
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     
