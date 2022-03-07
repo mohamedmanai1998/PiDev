@@ -9,6 +9,7 @@ import entite.evenement;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -52,13 +54,16 @@ public class AjouterEvenementController implements Initializable {
     @FXML
     private ListView<evenement> liste;
      static evenement selectedItemm;
+     evenement evenement;
     @FXML
     private TextField date;
-    ObservableList<String> listeTypeRecherchee = FXCollections.observableArrayList("Tout", "Nom", "IdEven", "Prix", "Recompense");
+//    ObservableList<String> listeTypeRecherchee = FXCollections.observableArrayList("Tout", "Nom", "IdEven", "Prix", "Recompense");
+//    private TextField txtRecherchee;
+//    private ComboBox<String> typeRecherchee;
     @FXML
-    private TextField txtRecherchee;
+    private TextField Search;
     @FXML
-    private ComboBox<String> typeRecherchee;
+    private TextField id;
      
 
     /**
@@ -68,8 +73,8 @@ public class AjouterEvenementController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         evenementservice cs = new evenementservice();
         liste.getItems().addAll(cs.readAll());
-        typeRecherchee.setItems(listeTypeRecherchee);
-        typeRecherchee.setValue("Tout");
+//        typeRecherchee.setItems(listeTypeRecherchee);
+//        typeRecherchee.setValue("Tout");
        
        
         // TODO
@@ -103,14 +108,18 @@ public class AjouterEvenementController implements Initializable {
 
     @FXML
     private void ModifierEvenement(ActionEvent event) {
-        evenement ev = new evenement();
-        evenementservice es = new evenementservice();
-         
-         ev.setNom(nom.getText());
-         ev.setDateEven(new Date(2022, 3, 30));
-         ev.setPrix(Integer.parseInt(prix.getText()));
-         ev.setRecompense(Integer.parseInt(recompense.getText()));
-         es.modifier(ev);
+       evenement pub = new evenement();
+        evenementservice es= new evenementservice();
+        pub.setNom(nom.getText());       
+        pub.setDateEven(new Date(12,04,2022));
+        pub.setPrix(Integer.parseInt(prix.getText()));
+        pub.setRecompense(Integer.parseInt(recompense.getText())); 
+        es.modifierPublication(pub,Integer.parseInt(id.getText()));
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Publication modifiée!");
+                alert.showAndWait();
     }
 
     @FXML
@@ -148,16 +157,39 @@ public class AjouterEvenementController implements Initializable {
     @FXML
     private void index3(MouseEvent event) {
         selectedItemm = liste.getSelectionModel().getSelectedItem();
+        id.setText(String.valueOf(selectedItemm.getIdEven()));
         nom.setText(String.valueOf(selectedItemm.getNom()));
         date.setText(String.valueOf(selectedItemm.getDateEven()));
         prix.setText(String.valueOf(selectedItemm.getPrix()));
         recompense.setText(String.valueOf(selectedItemm.getRecompense()));
     }
-     @FXML
+//     @FXML
+//    private void rechercher(KeyEvent event) {
+//        evenementservice ps= new evenementservice();
+//        ObservableList observableList = FXCollections.observableArrayList(ps.rechercheevenement(typeRecherchee.getValue(),txtRecherchee.getText()));   
+//        liste.setItems(observableList);
+//    }
+
+    @FXML
+    private void Search(ActionEvent event) {
+        evenementservice ca = new evenementservice();
+        List<evenement> nom = ca.Recherche(Search.getText());
+        liste.getItems().clear();
+        liste.getItems().removeAll(evenement);
+        liste.getItems().addAll(nom);
+        
+    }
+
+    @FXML
     private void rechercher(KeyEvent event) {
-        evenementservice ps= new evenementservice();
-        ObservableList observableList = FXCollections.observableArrayList(ps.rechercheevenement(typeRecherchee.getValue(),txtRecherchee.getText()));   
-        liste.setItems(observableList);
+    }
+
+    @FXML
+    private void tri(ActionEvent event) {
+         evenementservice ca = new evenementservice();
+        List<evenement> trie = ca.Tri();
+        liste.getItems().clear();
+        liste.getItems().addAll(trie);
     }
 
     

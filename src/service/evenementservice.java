@@ -13,9 +13,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import utils.DataSource;
 
 
@@ -50,6 +52,26 @@ public class evenementservice implements IService<evenement> {
         
         
 //    }
+    public void modifierPublication(evenement p, int idEven){
+        try {
+            String sql = "UPDATE evenement SET nom=?,dateEven=?,prix=?,recompense=? WHERE idEven=?";
+            
+            pst=conn.prepareStatement(sql);
+            pst.setString(1,p.getNom());
+            pst.setDate(2, p.getDateEven());
+            pst.setInt(3, p.getPrix());
+            pst.setInt(4, p.getRecompense());
+            pst.setInt(5, idEven);
+           
+           
+            
+            
+            pst.executeUpdate();
+            System.out.println("evenement modifiée");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    } 
     
     
      public void ajouterEvenement(evenement e ) {
@@ -228,6 +250,18 @@ public class evenementservice implements IService<evenement> {
         }
 
         return myList;
+    }
+      
+      public List<evenement> Recherche(String nom) {
+
+        return readAll().stream().filter(a -> a.getNom().equals(nom)).collect(Collectors.toList());
+
+    }
+
+    public List<evenement> Tri() {
+        Comparator<evenement> comparator = Comparator.comparing(evenement::getPrix);
+        List<evenement> prd = readAll();
+        return prd.stream().sorted(comparator).collect(Collectors.toList());
     }
       
     

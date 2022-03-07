@@ -23,18 +23,20 @@ public class Crudaziz {
     public static void main(String[] args) {
         
        // evenement e = new evenement(10,"aziz", new Date(2022, 3, 30), 10, 9);
-        evenementservice es = new evenementservice();
+       // evenementservice es = new evenementservice();
       //  es.ajouterEvenement(e);
       //  es.supprimer(e);
         //es.modifier(e);
         //es.readAll();
-        Commentaire e = new Commentaire(2,2, 5, "mlds", "ez", new Date(2022, 3, 30));
-        CommentaireService cs = new CommentaireService();
-        cs.ajouterCommentaire(e);
+       // Commentaire e = new Commentaire(2,2, 5, "mlds", "ez", new Date(2022, 3, 30));
+        //CommentaireService cs = new CommentaireService();
+        //cs.ajouterCommentaire(e);
         //int id, int id_guest, int id_publication, String nom, String comment, Date date_com
         
         //es.trierpublication();
         //System.out.println(es.Rechercheevenement("mohamed"));
+        //es.Recherche("n");
+        
         
     }
         
