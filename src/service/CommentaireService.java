@@ -181,6 +181,29 @@ public class CommentaireService implements IService<Commentaire> {
         }
         return i;
     }
+    
+    
+    public void modifierCommentaire(Commentaire p, int id){
+        try {
+            String sql = "UPDATE commentaire SET nom=?,comment=?,date_com=?,note=? WHERE id=?";
+            
+            pst=conn.prepareStatement(sql);
+            pst.setString(1,p.getNom());
+            pst.setString(2, p.getComment());
+            pst.setDate(3, p.getDate_com());
+            pst.setInt(4, p.getNote());
+            pst.setInt(5, id);
+           
+           
+            
+            
+            pst.executeUpdate();
+            System.out.println("commentaire modifiée");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    } 
+    
 }
     
     

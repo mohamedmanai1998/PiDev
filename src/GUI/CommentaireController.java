@@ -19,6 +19,8 @@ import service.CommentaireService;
 import service.evenementservice;
 import static GUI.AfficherEvenementController.selectedItem;
 import static GUI.ListEvenementController.selectedItem5;
+import java.sql.Date;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 
 /**
@@ -47,7 +49,7 @@ public class CommentaireController implements Initializable {
     @FXML
     private TextField note;
     @FXML
-    private Button Ajouterbtncomment;
+    private Button Modifierbtncomment;
 
  
     /**
@@ -66,7 +68,6 @@ public class CommentaireController implements Initializable {
 // TODO
     }    
 
-    @FXML
     private void AjouterCommentaire(ActionEvent event) {
          evenement pub = new evenement();
         evenementservice pubService = new evenementservice();
@@ -85,6 +86,22 @@ public class CommentaireController implements Initializable {
         
         
         
+    }
+
+    @FXML
+    private void ModifierCommentaire(ActionEvent event) {
+        Commentaire pub = new Commentaire();
+        CommentaireService es= new CommentaireService();
+        pub.setNom(nomc.getText());       
+        pub.setDate_com(new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+        pub.setComment(comment.getText());
+        pub.setNote(Integer.parseInt(note.getText())); 
+        es.modifierCommentaire(pub,selectedItem5.getId());
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Publication modifiée!");
+                alert.showAndWait();
     }
     
 }
