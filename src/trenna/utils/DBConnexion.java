@@ -14,7 +14,7 @@ import java.sql.*;
 public class DBConnexion {
     // JDBC driver name and database URL
 	public final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	public final String url = "jdbc:mysql://localhost:3306/trenna";
+	public final String url = "jdbc:mysql://localhost:3306/trenna-2";
 
 	// Database credentials
 	static final String login = "root";
