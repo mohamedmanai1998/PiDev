@@ -218,6 +218,8 @@ public class ListEvenementController implements Initializable {
         c.setId_guest(Integer.parseInt(id_guest.getText()));
         c.setNote(Integer.parseInt(note.getText()));
         
+           
+        
         
  
         cs.ajouterCommentaire(c);
