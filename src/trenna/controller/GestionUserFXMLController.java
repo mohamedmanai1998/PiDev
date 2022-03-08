@@ -5,6 +5,7 @@
  */
 package trenna.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -17,11 +18,16 @@ import trenna.entities.User;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import trenna.entities.Role;
 import trenna.services.RoleService;
 import trenna.services.UserRoleService;
@@ -40,7 +46,7 @@ public class GestionUserFXMLController implements Initializable {
     @FXML
     private TextField prenom;
     @FXML
-    private ComboBox<?> age;
+    private ComboBox<Integer> age;
     @FXML
     private PasswordField mdp;
 //    private ComboBox<?> role;
@@ -58,25 +64,42 @@ public class GestionUserFXMLController implements Initializable {
     private RadioButton admin;
     @FXML
     private RadioButton client;
+    @FXML
+    private TextField searchUser;
+    @FXML
+    private AnchorPane anchor;
+    
+   
+    @FXML
+    private Label labelUser;
     /*
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {   
-//        role.setItems(rolee);
-        if(admin.isSelected()){
-            client.setSelected(false);
-        }else if(client.isSelected()){
-            admin.setSelected(false);
-        }
+    public void initialize(URL url, ResourceBundle rb) {  
+//        anchor.setPrefWidth(852);
+//        anchor.setPrefHeight(581);
+//        anchor.resize(852, 581);
+//        anchor.layout();
+//        if(admin.isSelected()==true){
+//            client.setSelected(false);
+//        }else if(client.isSelected()==true){
+//            admin.setSelected(false);
+//        }
+       
+    
         age.setItems(agee);
         afficher();
-        fill();                      
+        fill();   
+        search();
     }        
+//    private void initData(){
+//            labelUser.setText(currentUser.getEmail());
+//    }
     private void afficher() {
         List<User> users = userService.afficher();
         ObservableList<User> observableArrayListUser = 
-           FXCollections.observableArrayList(users);
+        FXCollections.observableArrayList(users);
         list.setItems(observableArrayListUser);
         
     }   
@@ -100,6 +123,42 @@ public class GestionUserFXMLController implements Initializable {
             email.setText(user.getEmail());
         });
     }
+    private void search(){
+        ObservableList<User> listUser = FXCollections.observableArrayList(userService.afficher());
+        FilteredList<User> filteredData = new FilteredList<>(listUser,p -> true);
+
+    //Set the filter Predicate whenever the filter changes.
+    searchUser.textProperty().addListener((observable, oldValue, newValue) -> {
+        filteredData.setPredicate(user ->{
+            // If filter text is empty, display all persons.
+            if(newValue == null || newValue.isEmpty()){
+                return true;
+            }
+
+            // Compare first name and last name of every client with filter text.
+            String lowerCaseFilter = newValue.toLowerCase();
+
+            if(user.getPrenom().toLowerCase().contains(lowerCaseFilter)){
+                return true; //filter matches first name
+            }else if(user.getNom().toLowerCase().contains(lowerCaseFilter)){
+                return true; //filter matches last name
+            }else if(user.getEmail().toLowerCase().contains(lowerCaseFilter)){
+                return true; //filter matches email
+            }else if(String.valueOf(user.getAge()).toLowerCase().contains(lowerCaseFilter)){
+                return true; //filter matches age
+            }else if(String.valueOf(user.getRole()).toLowerCase().contains(lowerCaseFilter)){
+                return true; //filter matches role
+            }
+            return false; //Does not match
+        });
+    });
+
+    //Wrap the FilteredList in a SortedList.
+        SortedList<User> sortedData = new SortedList<>(filteredData);
+
+    //put the sorted list into the listview
+    list.setItems(sortedData);
+    }
     @FXML
     private void modifier(ActionEvent event) {
         User user = new User();
@@ -109,7 +168,7 @@ public class GestionUserFXMLController implements Initializable {
         user.setNom(nom.getText());
         user.setPrenom(prenom.getText());
         user.setMdp(mdp.getText());
-        user.setAge(age.getSelectionModel().getSelectedIndex());
+        user.setAge(age.getSelectionModel().getSelectedIndex()+10);
         Role r = new Role();
         RoleService serviceRole = new RoleService();
         if(admin.isSelected()){
@@ -133,6 +192,14 @@ public class GestionUserFXMLController implements Initializable {
         userRoleService.getById(user.getId());
         userService.supprimer(user);
         afficher();
+    }
+
+    @FXML
+    private void logout(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/trenna/fxml/LoginFXML.fxml"));
+        Parent root = loader.load();            
+        LoginFXMLController ac =loader.getController();
+        email.getScene().setRoot(root);
     }
     
 }

@@ -28,7 +28,7 @@ public class NewFXMain extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/trenna/fxml/UserFXML.fxml"));
         Parent root = loader.load();
         
-        Scene scene = new Scene(root); 
+        Scene scene = new Scene(root,869,583); 
         scene.getStylesheets().add("/trenna/fxml/UserFXML.css");
 //        Image image = new Image("file:..\\..\\..\\..\\..\\..\\Bureau\\istockphoto-1136317339-612x612.jpg");
 //        ImageView imageView = new ImageView(image);
@@ -37,6 +37,7 @@ public class NewFXMain extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    
 
     /**
      * @param args the command line arguments

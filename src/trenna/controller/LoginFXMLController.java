@@ -14,9 +14,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import trenna.entities.User;
 import trenna.services.UserService;
 
@@ -31,13 +34,16 @@ public class LoginFXMLController implements Initializable {
     private TextField email;
     @FXML
     private PasswordField mdp;
+    
+   
 
+     Alert alert = new Alert(Alert.AlertType.ERROR);
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
     }    
 
     @FXML
@@ -46,17 +52,23 @@ public class LoginFXMLController implements Initializable {
         UserService userService = new UserService();
         user.setEmail(email.getText());
         user.setMdp(mdp.getText());
-        
         User u = userService.rechercherParEmail(user);
-        if(userService.login(user)==true){
-            if(u.getRole().getName().equals("ADMINISTRATOR")){
+            if(email.getText().equals(u.getEmail()) && mdp.getText().equals(u.getMdp())){
+                userService.login(u);
+              
+                if(u.getRole().getName().equals("ADMINISTRATOR")){
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/trenna/fxml/GestionUserFXML.fxml"));
-                Parent root = loader.load();            
-                GestionUserFXMLController ac =loader.getController();
+                Parent root = loader.load();   
+                GestionUserFXMLController ac =loader.getController(); 
                
                 email.getScene().setRoot(root);
             }
-        }
+            }else{
+                alert.setTitle("Emai ou Mot de passe incorrect");
+            alert.setHeaderText("Veuillez saisir l'email ou le mot de passe correctement");
+            alert.setContentText("Il faut saisir l'email et le mot de passe correctement pour se connecter ");
+            alert.showAndWait(); 
+            }
     }
 
     @FXML

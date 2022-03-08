@@ -40,4 +40,7 @@ public class RegexValidation {
 	}
 	return found;
     }
+    public static boolean checkName( String name ) {
+      return name.matches( "[A-Z][a-z]*" );
+   }
 }

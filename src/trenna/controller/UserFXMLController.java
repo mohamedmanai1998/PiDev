@@ -9,12 +9,15 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -44,13 +47,18 @@ public class UserFXMLController implements Initializable {
     private TextField email;
     @FXML
     private PasswordField mdp;
-
+    @FXML
+    private ComboBox<?> agee;
+ 
+    final ObservableList agees = FXCollections.observableArrayList(10,11,12,13,14,15,16,17,18,19,20
+    ,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50);
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    
+     agee.setItems(agees);
     }    
 
     @FXML
@@ -89,14 +97,19 @@ public class UserFXMLController implements Initializable {
             alert.setHeaderText("Veuillez saisir l'email correctement");
             alert.setContentText("Il faut saisir le compte email pour pouvoir s'inscrire");
             alert.showAndWait();
+        }else if(!RegexValidation.checkName(nom.getText()) || !RegexValidation.checkName(prenom.getText())){
+            alert.setTitle("le nom ou prénom est incorrect !!");
+            alert.setHeaderText("Veuillez saisir le nom ou le prénom correctement");
+            alert.setContentText("Il faut saisir le nom ou le prénom sans des chiffres");
+            alert.showAndWait();
         }
-        if (null == nom.getText() || null == prenom.getText() || null == age.getText() || null == email.getText() ){
+        else if (null == nom.getText() || null == prenom.getText() || null == agee.getSelectionModel().getSelectedItem() || null == email.getText() ){
              alert.setTitle("champ vide !!");
             alert.setHeaderText("Veuillez remplir tous les champs");
             alert.setContentText("Il faut remplir tous les champs pour pouvoir s'inscrire");
             alert.showAndWait();
         }else {
-            user.setAge(Integer.parseInt(age.getText()));
+            user.setAge(agee.getSelectionModel().getSelectedIndex()+10);
             userService.ajouter(user);
             JavaMailUtils.sendMail(user.getEmail());
             

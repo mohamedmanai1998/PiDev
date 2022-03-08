@@ -36,9 +36,23 @@ public class UserService implements IService<User>{
     private Connection cnx;
     private static UserService instance;
     
+    private static User currentUser;
+    
     public UserService(){
         cnx =DBConnexion.getInstance().getCnx();
+        
     }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        UserService.currentUser = currentUser;
+    }
+
+
+    
     
     
     public static UserService getInstance(){
@@ -57,7 +71,7 @@ public class UserService implements IService<User>{
         try {
             String querry="INSERT INTO `utilisateur`(`nom`, `prenom`,`email`,`age`,`mdp`,`role`, verification_code) "
                     + "VALUES ('"+u.getNom()+"','"+u.getPrenom()+"','"+u.getEmail()+"','"+u.getAge()+"','"+u.getMdp()+"',"
-                    + "1,'"+verificationCode+"')";
+                    + "2,'"+verificationCode+"')";
             String sql = "Select * From utilisateur where email='"+u.getEmail()+"' ";
             Statement stm =cnx.createStatement();
         if (null != u.getMdp() && (u.getMdp().length()) < 8
@@ -94,7 +108,7 @@ public class UserService implements IService<User>{
         UserRole userRole = new UserRole();
         UserRoleService userRoleService = new UserRoleService();
         Role role = new Role();
-        role.setIdRole(1);
+        role.setIdRole(2);
         
         User user = rechercherParEmail(u);
         userRole.setUser(u);
@@ -178,9 +192,13 @@ public class UserService implements IService<User>{
             ResultSet rs = ps.executeQuery();  
             if(rs.next()){
                 if((rs.getString("email").equals(u.getEmail()))
-                        ||(rs.getString("mdp").equals(u.getMdp()))){
+                        && (rs.getString("mdp").equals(u.getMdp()))){
                     System.out.println("Vous etes connecté(e)" );
+                    
+//                    setCurrentUser(u);
+                    
                     login = true ;
+                    
                 }else
                     System.err.println("Veuillez saisir correctement l'adresse ou le mot de passe" );
 //             System.out.println("Authentifiaction valide pour le client "+u.getEmail()+"");
@@ -304,5 +322,26 @@ public class UserService implements IService<User>{
         
     }
     
-
+    public void validateCurrentLogin() {
+        
+//
+//        String verifyLogin = "SELECT count(1) FROM utilisateur WHERE email = '" + currentUser.getEmail() + "' AND mdp = '" + currentUser.getMdp() + "'";
+//        
+//         try {
+//            Statement statement = cnx.createStatement();
+//            ResultSet queryResult = statement.executeQuery(verifyLogin);
+//
+//            while (queryResult.next()) {
+//                if (queryResult.getInt(1) == 1) {
+//                    setCurrentUser(currentUser);
+//                    
+//                } else {
+//                    System.out.println("l'utilisateur n'est pas connecté");
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            e.getCause();
+//        }
+    }
 }
