@@ -5,6 +5,7 @@
  */
 package GUI;
 
+import common.RegexValidation;
 import entite.Commentaire;
 import entite.evenement;
 import javafx.geometry.Insets;
@@ -33,6 +34,7 @@ import javafx.stage.StageStyle;
 import service.CommentaireService;
 import service.evenementservice;
 import entite.EnvoyerEmail;
+import javafx.scene.control.Alert;
 
 /**
  * FXML Controller class
@@ -223,7 +225,14 @@ public class ListEvenementController implements Initializable {
     @FXML
     private void sendmail(ActionEvent event) throws Exception {
         EnvoyerEmail em= new EnvoyerEmail();
-       em.sendMail(mail.getText(),"aziz");
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        if(!RegexValidation.isValidEmail(mail.getText())){
+            alert.setTitle("le compte email est incorrect !!");
+            alert.setHeaderText("Veuillez saisir l'email correctement");
+            alert.setContentText("Il faut saisir le compte email pour pouvoir s'inscrire");
+            alert.showAndWait();
+        }else
+            em.sendMail(mail.getText(),"aziz");
            
 
         

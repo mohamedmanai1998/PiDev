@@ -5,6 +5,8 @@
  */
 package GUI;
 
+import static GUI.ListEvenementController.selectedItem5;
+import entite.Commentaire;
 import entite.evenement;
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +21,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import service.CommentaireService;
 import service.evenementservice;
  
 /**
@@ -29,17 +32,14 @@ import service.evenementservice;
 public class AfficherEvenementController implements Initializable {
    
     static evenement selectedItem ;
+    static Commentaire selectedItem6;
 
-    @FXML
     private TextField list;
-    @FXML
     private TextField id;
     @FXML
     private Button supprimerbtn;
     @FXML
-    private Button modifierbtn;
-    @FXML
-    private Button ajouterbtn;
+    private ListView<Commentaire> listcom;
 
     /**
      * Initializes the controller class.
@@ -47,6 +47,8 @@ public class AfficherEvenementController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        CommentaireService cs= new CommentaireService();
+        listcom.getItems().addAll(cs.readAll());
     }    
     
     void selList (String list){
@@ -55,32 +57,10 @@ public class AfficherEvenementController implements Initializable {
     
    
    
-    @FXML
-    private void SupprimerEvenement(ActionEvent event) {
-        evenement ev =new evenement();
-        evenementservice es =new evenementservice();
-        es.supprimer(Integer.parseInt(id.getText()));
-        
-    }
+    
 
-    @FXML
-    private void ModifierEvenement(ActionEvent event) {
-        try {
-            
-             FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifierEvenement.fxml"));
-            Parent root = loader.load();
-            ModifierEvenementController ac =loader.getController();
-            
-            
-            id.getScene().setRoot(root);
-            
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+   
 
-    }
-
-    @FXML
     private void AjouterEvenement(ActionEvent event) {
          try {
             
@@ -96,30 +76,23 @@ public class AfficherEvenementController implements Initializable {
         }
     }
 
+    
+    
+
     @FXML
-    private void index2(KeyEvent event) {
-         try {
-             FXMLLoader loader = new FXMLLoader(getClass().getResource("Commentaire.fxml"));
-            Parent root = loader.load();
-            CommentaireController ac =loader.getController(); 
-            id.getScene().setRoot(root);
-            
-            
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+    private void index3(MouseEvent event) {
+                selectedItem6 = listcom.getSelectionModel().getSelectedItem();
+        
         
     }
 
     @FXML
-    private void index(MouseEvent event) {
-       /* selectedItem = list.getSelectionModel().getSelectedItem();
-        id.setText(String.valueOf(selectedItem.getId()));
-        nom.setText(selectedItem.getNom());
-        description.setText(selectedItem.getDescription());
-        adresse.setText(selectedItem.getAdresse());*/
-        
+    private void SupprimerCommentaire(ActionEvent event) {
+        Commentaire ev =new Commentaire();
+        CommentaireService es =new CommentaireService();
+        es.supprimer(selectedItem6.getId());
     }
+
     }
     
 

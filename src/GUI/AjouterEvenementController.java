@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -48,8 +49,6 @@ public class AjouterEvenementController implements Initializable {
     @FXML
     private Button modifierbtn;
     @FXML
-    private Button affichetbtn;
-    @FXML
     private Button supprimerbtn;
     @FXML
     private ListView<evenement> liste;
@@ -64,6 +63,8 @@ public class AjouterEvenementController implements Initializable {
     private TextField Search;
     @FXML
     private TextField id;
+    @FXML
+    private Button comment;
      
 
     /**
@@ -122,7 +123,6 @@ public class AjouterEvenementController implements Initializable {
                 alert.showAndWait();
     }
 
-    @FXML
     private void AfficherEvenement(ActionEvent event) {
         try {
 //            Parent parent = FXMLLoader.load(getClass().getResource("DetailPublication.fxml"));
@@ -190,6 +190,23 @@ public class AjouterEvenementController implements Initializable {
         List<evenement> trie = ca.Tri();
         liste.getItems().clear();
         liste.getItems().addAll(trie);
+    }
+
+    @FXML
+    private void commentaire(ActionEvent event) {
+      try {
+            
+             FXMLLoader loader = new FXMLLoader(getClass().getResource("AfficherEvenement.fxml"));
+            Parent root = loader.load();
+           AfficherEvenementController ac =loader.getController();
+            
+            
+            id.getScene().setRoot(root);
+            
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
     }
 
     
