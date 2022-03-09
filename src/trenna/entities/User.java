@@ -55,12 +55,13 @@ public class User {
         this.verificationCode = verificationCode;
     }
     
-public User(String nom, String prenom, String email, int age, String mdp) {
+public User(String nom, String prenom, String email, int age, String mdp, Role role) {
         this.nom = nom;
         this.prenom = prenom;
         this.email = email;
         this.age = age;
         this.mdp = mdp;
+        this.role = role;
         
     }
 

@@ -36,20 +36,12 @@ public class UserService implements IService<User>{
     private Connection cnx;
     private static UserService instance;
     
-    private static User currentUser;
     
     public UserService(){
         cnx =DBConnexion.getInstance().getCnx();
         
     }
 
-    public static User getCurrentUser() {
-        return currentUser;
-    }
-
-    public static void setCurrentUser(User currentUser) {
-        UserService.currentUser = currentUser;
-    }
 
 
     
@@ -195,7 +187,7 @@ public class UserService implements IService<User>{
                         && (rs.getString("mdp").equals(u.getMdp()))){
                     System.out.println("Vous etes connecté(e)" );
                     
-//                    setCurrentUser(u);
+                    PasswordUtils.setCurrentUser(u);
                     
                     login = true ;
                     

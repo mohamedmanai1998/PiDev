@@ -5,9 +5,11 @@
  */
 package trenna;
 
+import trenna.entities.Role;
 import trenna.entities.User;
 import trenna.services.UserService;
 import trenna.utils.JavaMailUtils;
+import trenna.utils.PasswordUtils;
 
 /**
  *
@@ -19,7 +21,8 @@ public class Trenna {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Exception {
-        User user = new User("manai", "ahmed","manai.mohamed@esprit.tn",24,"Mohamed@2020");
+        Role role = new Role(1,"aaaa","Admin");
+        User user = new User("manai", "ahmed","manai.mohamed@esprit.tn",24,"Mohamed@2020",role);
         UserService userservice = UserService.getInstance();
 //        userservice.ajouter(user);
 //        userservice.ajouter(user);
@@ -29,7 +32,7 @@ public class Trenna {
 //        userservice.update(user);
 //        userservice.afficher();
         userservice.login(user);
-        System.out.println(UserService.getCurrentUser());
+        System.out.println(PasswordUtils.getCurrentUser().toString());
 //        userservice.validateLogin();
 //          userservice.rechercherParEmail(user);
 //          userservice.rechercherParName(user);

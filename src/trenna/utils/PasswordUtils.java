@@ -17,11 +17,23 @@ import java.util.Base64;
 import java.util.Random;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import trenna.entities.User;
 public class PasswordUtils {
     private static final Random RANDOM = new SecureRandom();
     private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final int ITERATIONS = 10000;
     private static final int KEY_LENGTH = 256;
+    
+    private static User currentUser ;
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        PasswordUtils.currentUser = currentUser;
+    }
+    
     
      public static String getSalt(int length) {
         StringBuilder returnValue = new StringBuilder(length);
